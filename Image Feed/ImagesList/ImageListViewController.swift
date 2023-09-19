@@ -1,9 +1,13 @@
 import UIKit
 
 
-class ImageListViewController: UIViewController {
+final class ImageListViewController: UIViewController {
 
     @IBOutlet private var tableView: UITableView!
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     private let photosName: [String] = Array(0...20).map{"\($0)" }
     
@@ -18,8 +22,8 @@ class ImageListViewController: UIViewController {
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
+        formatter.dateFormat = "dd MMMM yyyy"
+        formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
     
@@ -30,9 +34,7 @@ class ImageListViewController: UIViewController {
         
         cell.imageCell.image = image
         cell.dateLabel.text = dateFormatter.string(from: Date())
-        
-        let isLiked = indexPath.row % 2 == 0
-        let likeImage = isLiked ? UIImage(named: "active") : UIImage(named: "no_active")
+        let likeImage = indexPath.row % 2 != 0 ? UIImage(named: "active") : UIImage(named: "no_active")
         cell.likeButton.setImage(likeImage, for: .normal)
     }
 
