@@ -2,6 +2,7 @@ import UIKit
 
 
 final class ImageListViewController: UIViewController {
+    private var identifier = "ShowSingleImage"
 
     @IBOutlet private var tableView: UITableView!
     
@@ -37,12 +38,24 @@ final class ImageListViewController: UIViewController {
         let likeImage = indexPath.row % 2 != 0 ? UIImage(named: "active") : UIImage(named: "no_active")
         cell.likeButton.setImage(likeImage, for: .normal)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == identifier {
+            let viewController = segue.destination as! SingleImageViewController
+            let indexPath = sender as! IndexPath
+            let image = UIImage(named: photosName[indexPath.row])
+            viewController.image = image
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    }
 
 
 }
 
 extension ImageListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "ShowSingleImage", sender: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
