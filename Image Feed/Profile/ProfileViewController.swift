@@ -14,7 +14,7 @@ class ProfileViewController: UIViewController {
         addLoginLabel()
         addDescriptionLabel()
         addExitButton()
-      
+        
     }
     
     func addImageView() {
@@ -65,14 +65,13 @@ class ProfileViewController: UIViewController {
         exitButton.tintColor = UIColor(named: "YP Red")
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(exitButton)
-        NSLayoutConstraint.activate([ 
+        NSLayoutConstraint.activate([
             exitButton.widthAnchor.constraint(equalToConstant: 44),
             exitButton.heightAnchor.constraint(equalToConstant: 44),
             exitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             exitButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
         ])
-       
+        
     }
- 
     
 }

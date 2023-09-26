@@ -50,7 +50,6 @@ extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         imageView
     }
-    
 
 }
 
