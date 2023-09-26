@@ -104,7 +104,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dVd-Ww-NPn">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="dVd-Ww-NPn">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="414" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="wzn-9h-QDs">
@@ -138,13 +138,14 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s6V-ct-90F">
                                 <rect key="frame" x="171.66666666666666" y="751" width="50" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="Qak-1c-uxb"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="Wvu-dj-5Xb"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="jic-uo-zNq"/>
+                                    <constraint firstAttribute="width" constant="50" id="Wvu-dj-5Xb"/>
                                     <constraint firstAttribute="height" constant="50" id="pJq-my-H0l"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="share_image" backgroundImage="Ellipse"/>
+                                <connections>
+                                    <action selector="didTapShareButton:" destination="fOX-Vg-R0D" eventType="touchUpInside" id="Spl-Gy-s8t"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ROd-LW-HlE"/>

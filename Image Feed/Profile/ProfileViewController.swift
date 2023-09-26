@@ -20,8 +20,13 @@ class ProfileViewController: UIViewController {
     func addImageView() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
-        imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(equalToConstant: 70),
+            imageView.heightAnchor.constraint(equalToConstant: 70),
+            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32)
+        ])
+        
     }
     
     func addNameLabel() {
@@ -57,11 +62,16 @@ class ProfileViewController: UIViewController {
     func addExitButton() {
         let exitButton = UIButton()
         exitButton.setImage(UIImage(systemName: "ipad.and.arrow.forward"), for: .normal)
-        exitButton.tintColor = .red
+        exitButton.tintColor = UIColor(named: "YP Red")
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(exitButton)
-        exitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        exitButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
+        NSLayoutConstraint.activate([ 
+            exitButton.widthAnchor.constraint(equalToConstant: 44),
+            exitButton.heightAnchor.constraint(equalToConstant: 44),
+            exitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            exitButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
+        ])
+       
     }
  
     
