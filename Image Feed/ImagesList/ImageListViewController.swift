@@ -2,7 +2,8 @@ import UIKit
 
 
 final class ImageListViewController: UIViewController {
-
+    private var ShowSingleImageSegueIdentifier = "ShowSingleImage"
+    
     @IBOutlet private var tableView: UITableView!
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -37,19 +38,32 @@ final class ImageListViewController: UIViewController {
         let likeImage = indexPath.row % 2 != 0 ? UIImage(named: "active") : UIImage(named: "no_active")
         cell.likeButton.setImage(likeImage, for: .normal)
     }
-
-
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == ShowSingleImageSegueIdentifier {
+            if let viewController = segue.destination as? SingleImageViewController {
+                let indexPath = sender as! IndexPath
+                let image = UIImage(named: photosName[indexPath.row])
+                viewController.image = image
+            }
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    }
+    
+    
 }
 
 extension ImageListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: ShowSingleImageSegueIdentifier, sender: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let  image =  UIImage(named: photosName[indexPath.row]) else {
             return 0
         }
-
+        
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
         let imageWidth = image.size.width
