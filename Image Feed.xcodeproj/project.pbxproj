@@ -10,6 +10,10 @@
 		845BAD192AC585E5003E8D4E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845BAD182AC585E4003E8D4E /* Constants.swift */; };
 		845BAD1C2AC59A4E003E8D4E /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845BAD1B2AC59A4E003E8D4E /* AuthViewController.swift */; };
 		845BAD1E2AC59C5E003E8D4E /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845BAD1D2AC59C5E003E8D4E /* WebViewViewController.swift */; };
+		845BAD202AC5A882003E8D4E /* WebViewViewControllerDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845BAD1F2AC5A882003E8D4E /* WebViewViewControllerDelegateProtocol.swift */; };
+		84664E522ACBFFD400724B0E /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84664E512ACBFFD400724B0E /* OAuth2Service.swift */; };
+		84664E552ACC001B00724B0E /* OAuthTokenResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84664E542ACC001B00724B0E /* OAuthTokenResponseBody.swift */; };
+		84664E572ACC097200724B0E /* OAuth2TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84664E562ACC097200724B0E /* OAuth2TokenStorage.swift */; };
 		8478171D2A9B9ED3004F973F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8478171C2A9B9ED3004F973F /* AppDelegate.swift */; };
 		8478171F2A9B9ED3004F973F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8478171E2A9B9ED3004F973F /* SceneDelegate.swift */; };
 		847817212A9B9ED3004F973F /* ImageListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847817202A9B9ED3004F973F /* ImageListViewController.swift */; };
@@ -25,6 +29,10 @@
 		845BAD182AC585E4003E8D4E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		845BAD1B2AC59A4E003E8D4E /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		845BAD1D2AC59C5E003E8D4E /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
+		845BAD1F2AC5A882003E8D4E /* WebViewViewControllerDelegateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewControllerDelegateProtocol.swift; sourceTree = "<group>"; };
+		84664E512ACBFFD400724B0E /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
+		84664E542ACC001B00724B0E /* OAuthTokenResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenResponseBody.swift; sourceTree = "<group>"; };
+		84664E562ACC097200724B0E /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
 		847817192A9B9ED3004F973F /* Image Feed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Image Feed.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8478171C2A9B9ED3004F973F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8478171E2A9B9ED3004F973F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -52,10 +60,21 @@
 		845BAD1A2AC59A09003E8D4E /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				845BAD1F2AC5A882003E8D4E /* WebViewViewControllerDelegateProtocol.swift */,
 				845BAD1B2AC59A4E003E8D4E /* AuthViewController.swift */,
 				845BAD1D2AC59C5E003E8D4E /* WebViewViewController.swift */,
+				84664E512ACBFFD400724B0E /* OAuth2Service.swift */,
+				84664E562ACC097200724B0E /* OAuth2TokenStorage.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		84664E532ACC000500724B0E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				84664E542ACC001B00724B0E /* OAuthTokenResponseBody.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		847817102A9B9ED3004F973F = {
@@ -77,6 +96,7 @@
 		8478171B2A9B9ED3004F973F /* Image Feed */ = {
 			isa = PBXGroup;
 			children = (
+				84664E532ACC000500724B0E /* Models */,
 				845BAD1A2AC59A09003E8D4E /* Auth */,
 				84ECE4282ABB67A200B6A533 /* Single Image */,
 				84ECE4242AB98AFA00B6A533 /* Profile */,
@@ -145,7 +165,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					847817182A9B9ED3004F973F = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -190,12 +210,16 @@
 			files = (
 				84ECE42A2ABB67CA00B6A533 /* SingleImageViewController.swift in Sources */,
 				847817212A9B9ED3004F973F /* ImageListViewController.swift in Sources */,
+				84664E552ACC001B00724B0E /* OAuthTokenResponseBody.swift in Sources */,
 				84B66AFE2AB2E59C00F3EE1B /* ImageListCell.swift in Sources */,
 				84ECE4232AB9861100B6A533 /* ProfileViewController.swift in Sources */,
+				84664E522ACBFFD400724B0E /* OAuth2Service.swift in Sources */,
 				845BAD1C2AC59A4E003E8D4E /* AuthViewController.swift in Sources */,
 				845BAD192AC585E5003E8D4E /* Constants.swift in Sources */,
 				8478171D2A9B9ED3004F973F /* AppDelegate.swift in Sources */,
+				845BAD202AC5A882003E8D4E /* WebViewViewControllerDelegateProtocol.swift in Sources */,
 				845BAD1E2AC59C5E003E8D4E /* WebViewViewController.swift in Sources */,
+				84664E572ACC097200724B0E /* OAuth2TokenStorage.swift in Sources */,
 				8478171F2A9B9ED3004F973F /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,6 +282,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -318,6 +343,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

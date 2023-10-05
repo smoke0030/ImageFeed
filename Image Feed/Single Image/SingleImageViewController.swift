@@ -1,10 +1,12 @@
 import UIKit
 
 class SingleImageViewController: UIViewController {
-    var image: UIImage!
+    
     
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var scrollView: UIScrollView!
+    
+    var image: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
