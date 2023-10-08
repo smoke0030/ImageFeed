@@ -2,7 +2,7 @@ import Foundation
 
 protocol WebViewViewControllerDelegate: AnyObject {
     
-    func ViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
+    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController)
     
