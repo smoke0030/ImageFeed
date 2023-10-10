@@ -1,6 +1,10 @@
 import UIKit
 import WebKit
 
+protocol WebViewViewControllerDelegate: AnyObject {
+    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController)
+}
 
 final class WebViewViewController: UIViewController {
     @IBOutlet private var webView: WKWebView!
@@ -12,18 +16,16 @@ final class WebViewViewController: UIViewController {
         super.viewDidLoad()
         
         webView.navigationDelegate = self
-        
         loadWebView()
-        
-        updateProgress()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         webView.addObserver(self,
                             forKeyPath: #keyPath(WKWebView.estimatedProgress),
                             options: .new,
                             context: nil)
+        updateProgress()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -50,8 +52,6 @@ final class WebViewViewController: UIViewController {
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
     
-    
-    
     @IBAction func didTapBackButton(_ sender: UIButton) {
         delegate?.webViewViewControllerDidCancel(self)
     }
@@ -71,17 +71,15 @@ private extension WebViewViewController {
     }
 }
 
-
 extension WebViewViewController: WKNavigationDelegate {
     private func code(from url: URL?) -> String? {
         guard let url = url,
-             let urlComponents = URLComponents(string: url.absoluteString),
+              let urlComponents = URLComponents(string: url.absoluteString),
               urlComponents.path == "/oauth/authorize/native",
-              let items = urlComponents.queryItems?.first(where: { $0.value == "code"} ) else { return nil }
-           
+              let items = urlComponents.queryItems?.first(where: { $0.name == "code"} ) else { return nil }
+        
         return items.value
     }
-    
     
     func webView(
         _ webView: WKWebView,
@@ -95,5 +93,4 @@ extension WebViewViewController: WKNavigationDelegate {
             decisionHandler(.allow)
         }
     }
-    
 }

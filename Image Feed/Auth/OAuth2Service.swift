@@ -13,7 +13,6 @@ final class OAuth2Service {
         }
     }
     
-    
     func fetchAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void ) {
         
         var components =  URLComponents(string: "https://unsplash.com/oauth/token")
@@ -41,20 +40,20 @@ final class OAuth2Service {
             }
             task.resume()
         }
-        
-        
     }
-    
-    
 }
 
 extension URLRequest {
-    static func makeHTTPRequest(path: String, httpMethod: String, baseURL: URL = DefaultBaseURL!) -> URLRequest {
-        var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
+    static func makeHTTPRequest(path: String,
+                                httpMethod: String,
+                                baseURL: URL = DefaultBaseURL) -> URLRequest {
+        var request = URLRequest(url: URL(string: path, relativeTo: baseURL) ?? DefaultBaseURL)
         request.httpMethod  = httpMethod
         return request
     }
 }
+
+//MARK: - decoder
 
 extension OAuth2Service {
     private func object(for request: URLRequest, completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) -> URLSessionTask {
@@ -68,11 +67,6 @@ extension OAuth2Service {
     }
 }
 
-enum NetworkError: Error {
-    case httpStatusCode(Int)
-    case urlRequestError(Error)
-    case urlSessionError
-}
 extension URLSession {
     func data(
         for request: URLRequest,
@@ -92,7 +86,6 @@ extension URLSession {
                     fulfillCompletion(.success(data))
                 } else {
                     fulfillCompletion(.failure(NetworkError .httpStatusCode(statusCode)))
-                    print(String(data: data, encoding: .utf8))
                 }
             } else if let error = error {
                 fulfillCompletion(.failure(NetworkError.urlRequestError(error)))
@@ -103,4 +96,10 @@ extension URLSession {
         task.resume()
         return task
     }
+}
+//MARK: - enum's
+enum NetworkError: Error {
+    case httpStatusCode(Int)
+    case urlRequestError(Error)
+    case urlSessionError
 }

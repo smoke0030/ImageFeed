@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lE7-64-Gx7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PY5-1Z-dKr">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -174,7 +174,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="1o4-yd-QU4">
             <objects>
-                <tabBarController id="Joe-pc-1sT" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="Joe-pc-1sT" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="nfi-82-qyW">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -224,7 +224,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vmL-fq-i6m">
-                                <rect key="frame" x="32" y="680" width="329" height="48"/>
+                                <rect key="frame" x="32" y="714" width="329" height="48"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="at2-Z5-VI5"/>
@@ -322,10 +322,10 @@
         <!--Navigation Controller-->
         <scene sceneID="I1C-tc-kkt">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lE7-64-Gx7" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ShowAuthenticationScreenSegueIdentifier" automaticallyAdjustsScrollViewInsets="NO" id="lE7-64-Gx7" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="b6K-Sp-RCo">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -337,10 +337,40 @@
             </objects>
             <point key="canvasLocation" x="-967" y="-1267"/>
         </scene>
+        <!--Splash View Controller-->
+        <scene sceneID="1d3-Zf-hxj">
+            <objects>
+                <viewController storyboardIdentifier="SplashViewController" id="PY5-1Z-dKr" userLabel="Splash View Controller" customClass="SplashViewController" customModule="Image_Feed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="C93-mC-Isd">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="QrO-vF-Hia">
+                                <rect key="frame" x="159.66666666666666" y="387.66666666666669" width="74" height="76.666666666666686"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="SJb-8E-htu"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="QrO-vF-Hia" firstAttribute="centerY" secondItem="C93-mC-Isd" secondAttribute="centerY" id="Alw-1a-tmy"/>
+                            <constraint firstItem="QrO-vF-Hia" firstAttribute="centerX" secondItem="C93-mC-Isd" secondAttribute="centerX" id="iCK-fO-thy"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="ADd-tv-Z2x"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="lE7-64-Gx7" kind="presentation" identifier="ShowAuthenticationScreen" modalPresentationStyle="fullScreen" id="M5N-Hb-nJH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ift-Bu-DT8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2213" y="-619"/>
+        </scene>
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
         <image name="Ellipse" width="51" height="50"/>
+        <image name="LaunchScreen" width="74" height="76.666664123535156"/>
         <image name="active" width="44" height="44"/>
         <image name="auth_screen_logo" width="60" height="60"/>
         <image name="back_button" width="24" height="24"/>

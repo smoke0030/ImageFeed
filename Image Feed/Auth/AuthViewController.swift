@@ -17,23 +17,18 @@ class AuthViewController: UIViewController {
                 fatalError("Failed to prepare for \(identifier)") }
             webViewViewController.delegate = self
         }
-            else {
-                super.prepare(for: segue, sender: sender)
-            }
+        else {
+            super.prepare(for: segue, sender: sender)
         }
     }
+}
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         delegate?.authViewController(self, didAuthenticateWithCode: code)
-        
     }
-    
-    
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
     }
-    
-    
 }
