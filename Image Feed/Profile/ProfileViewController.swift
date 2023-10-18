@@ -6,6 +6,7 @@ class ProfileViewController: UIViewController {
     private let nameLabel = UILabel()
     private let loginLabel = UILabel()
     private let descriptionLabel = UILabel()
+    private let profileService =  ProfileService.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -14,6 +15,8 @@ class ProfileViewController: UIViewController {
         addLoginLabel()
         addDescriptionLabel()
         addExitButton()
+        updateProfileDetails(profile: profileService.profile)
+        
         
     }
     
@@ -74,4 +77,13 @@ class ProfileViewController: UIViewController {
         
     }
     
+}
+
+extension ProfileViewController {
+    private func updateProfileDetails(profile: Profile?) {
+        guard let profile = profileService.profile else {return}
+        nameLabel.text = profile.name
+        loginLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
+    }
 }

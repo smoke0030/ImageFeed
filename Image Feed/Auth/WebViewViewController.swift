@@ -77,7 +77,7 @@ extension WebViewViewController: WKNavigationDelegate {
               let urlComponents = URLComponents(string: url.absoluteString),
               urlComponents.path == "/oauth/authorize/native",
               let items = urlComponents.queryItems?.first(where: { $0.name == "code"} ) else { return nil }
-        
+        print("ITEMS VALUE", items.value)
         return items.value
     }
     
