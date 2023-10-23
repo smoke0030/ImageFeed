@@ -10,19 +10,20 @@ import ProgressHUD
 
 final class SplashViewController: UIViewController {
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
-    
-    private let profileService = ProfileService.shared
     private let oauth2Service = OAuth2Service()
     private let oauth2TokenStorage = OAuth2TokenStorage()
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    weak var webViewVC: WebViewViewController?
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if (oauth2TokenStorage.token != nil) {
             guard let token = oauth2TokenStorage.token else { return }
-//            fetchProfile(token: token)
-            print("TOKEN", token)
-            switchToTabBarController()
+            fetchProfile(token: token)
+            
+           
         } else {
             performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
         }
@@ -35,6 +36,8 @@ final class SplashViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNeedsStatusBarAppearanceUpdate()
+        
+        
     }
     
     private func switchToTabBarController() {
@@ -62,7 +65,6 @@ extension SplashViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        print("CODE", code)
         UIBlockingProgressHUD.show()
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
@@ -76,28 +78,45 @@ extension SplashViewController: AuthViewControllerDelegate {
         oauth2Service.fetchAuthToken(code: code) { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success:
-                self.switchToTabBarController()
+            case .success(let token):
+                self.fetchProfile(token: token)
                 UIBlockingProgressHUD.dismiss()
             case .failure:
-                ProgressHUD.dismiss()
+                UIBlockingProgressHUD.dismiss()
+                
+                
                 break
             }
         }
     }
     
-//    private func fetchProfile(token: String) {
-//        profileService.fetchProfile(token) { [weak self] result in
-//            guard let self = self else { return }
-//            switch result {
-//            case .success:
-//                UIBlockingProgressHUD.dismiss()
-//                self.switchToTabBarController()
-//            case .failure:
-//                UIBlockingProgressHUD.dismiss()
-//                
-//                break
-//            }
-//        }
-//    }
+    private func fetchProfile(token: String) {
+        profileService.fetchProfile(token) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success:
+                guard let username = profileService.profile?.username else { return }
+                profileImageService.fetchProfileImageURL(token: token, username: username) { _ in }
+                DispatchQueue.main.async {
+                    self.switchToTabBarController()
+                }
+                UIBlockingProgressHUD.dismiss()
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                showAlert(with: error)
+                break
+            }
+        }
+        
+    }
+    
+    private func showAlert(with error: Error) {
+        let alert = UIAlertController(title: "Что-то пошло не так(",
+                                      message: "Не удалось войти в систему",
+                                          preferredStyle: .alert)
+        alert.addAction((UIAlertAction(title: "OK",
+                                       style: .cancel)))
+        webViewVC?.present(alert, animated: true, completion: nil)
+    }
+    
 }

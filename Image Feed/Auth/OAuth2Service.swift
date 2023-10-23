@@ -45,9 +45,7 @@ final class OAuth2Service {
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             
-            
-            
-            let task = object(for: request) { [weak self] result in
+            let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
                 
                 DispatchQueue.main.async {
                     guard let self = self else { return }
@@ -65,7 +63,10 @@ final class OAuth2Service {
             }
             self.task = task
             task.resume()
+            
         }
+        
+        
     }
 }
 
@@ -122,6 +123,16 @@ extension URLSession {
         })
         task.resume()
         return task
+    }
+    
+    func objectTask<T: Decodable> (for request: URLRequest, completion: @escaping (Result<T, Error>) -> Void)
+        -> URLSessionTask {
+            return data(for: request) { result in
+                let response = result.flatMap { data -> Result<T, Error> in
+                    Result {try  JSONDecoder().decode(T.self, from: data) }
+                }
+                completion(response)
+            }
     }
 }
 //MARK: - enum's

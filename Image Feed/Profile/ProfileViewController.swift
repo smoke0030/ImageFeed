@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 class ProfileViewController: UIViewController {
     
@@ -7,6 +8,9 @@ class ProfileViewController: UIViewController {
     private let loginLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let profileService =  ProfileService.shared
+    private let profileImageService  = ProfileImageService.shared
+    
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,17 +21,41 @@ class ProfileViewController: UIViewController {
         addExitButton()
         updateProfileDetails(profile: profileService.profile)
         
-        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(forName: ProfileImageService.DidChangeNotification,
+                         object: nil,
+                         queue: .main
+                         )  { [weak self] _ in
+                guard let self = self  else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
+    }
+    
+    private func updateAvatar(){
+        guard let profileImageURL = profileImageService.avatarURL,
+              let url = URL(string: profileImageURL)
+        else { return }
+        imageView.kf.indicatorType = .activity
+        let placeholderImage = UIImage(named: "placeholder")
+        imageView.kf.setImage(with: url, placeholder: placeholderImage, options: [])
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     private func addImageView() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 35
         view.addSubview(imageView)
         NSLayoutConstraint.activate([
             imageView.widthAnchor.constraint(equalToConstant: 70),
             imageView.heightAnchor.constraint(equalToConstant: 70),
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32)
+            
         ])
         
     }
@@ -80,10 +108,39 @@ class ProfileViewController: UIViewController {
 }
 
 extension ProfileViewController {
-    private func updateProfileDetails(profile: Profile?) {
+    func updateProfileDetails(profile: Profile?) {
         guard let profile = profileService.profile else {return}
         nameLabel.text = profile.name
         loginLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
     }
+    
+//    private func fetchProfile(token: String) {
+//        profileService.fetchProfile(token) { [weak self] result in
+//            guard let self = self else { return }
+//            switch result {
+//            case .success:
+//                
+//                updateProfileDetails(profile: profileService.profile)
+//            case .failure:
+//               
+//                
+//                break
+//            }
+//        }
+//    }
+    
+//    func fetchProfileImage(token: String) {
+//        guard let username = profileService.profile?.username else { return }
+//        profileImageService.fetchProfileImageURL(token: token, username: username) { result in
+//            switch result {
+//            case .success:
+//                print("Hih")
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//                
+//            }
+//        }
+//    }
+    
 }

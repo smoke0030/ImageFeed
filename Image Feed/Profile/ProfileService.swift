@@ -20,7 +20,7 @@ final class ProfileService {
         let request =  makeRequest(token: token)
         
         
-        let task = object(for: request) { [weak self] (result: Result<ProfileResult, Error>)  in
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>)  in
             guard let self = self else { return }
             switch result {
             case .success(let body):
@@ -51,66 +51,28 @@ final class ProfileService {
         
         func object(for request: URLRequest, completion: @escaping (Result<ProfileResult, Error>) -> Void) -> URLSessionTask {
             let decoder = JSONDecoder()
-            return urlSession.profileData(for: request) { result in
+            return urlSession.data(for: request) { result in
                 let response = result.flatMap { data -> Result<ProfileResult, Error> in
                     Result { try decoder.decode(ProfileResult.self, from: data) }
                 }
-                print(response)
                 completion(response)
             }
         }
     }
-    
-extension URLSession {
-    func profileData(
-        for request: URLRequest,
-        completion: @escaping (Result<Data, Error>) -> Void
-    ) -> URLSessionTask {
-        let fulfillCompletion: (Result<Data, Error>) -> Void = { result in
-            DispatchQueue.main.async {
-                completion(result)
-            }
-        }
-        let task = dataTask(with: request, completionHandler: { data, response, error in
-            if let data = data,
-               let response = response,
-               let statusCode = (response as? HTTPURLResponse)?.statusCode
-            {
-                if 200 ..< 300 ~= statusCode {
-                    fulfillCompletion(.success(data))
-                    print("DATA", data)
-                } else {
-                    fulfillCompletion(.failure(NetworkError.httpStatusCode(statusCode)))
-                }
-            } else if let error = error {
-                fulfillCompletion(.failure(NetworkError.urlRequestError(error)))
-            } else {
-                fulfillCompletion(.failure(NetworkError.urlSessionError))
-            }
-        })
-        task.resume()
-        return task
-    }
-}
-    
 
 struct ProfileResult: Codable {
     
     let id: String
     let username, name, firstName, lastName: String
     let bio: String?
-    let profileImage: ProfileImage?
-    
     
     enum CodingKeys: String, CodingKey {
         case id, username, name
         case firstName = "first_name"
         case lastName = "last_name"
         case bio
-        case profileImage
     }
 }
-
 
 struct Profile: Codable {
     let id: String
@@ -118,7 +80,6 @@ struct Profile: Codable {
     let name:String
     let loginName: String
     let bio: String?
-    let profileImage: ProfileImage?
     
     init(data: ProfileResult) {
         self.id = data.id
@@ -126,10 +87,6 @@ struct Profile: Codable {
         self.name = (data.firstName) + " " + (data.lastName)
         self.loginName = "@" + data.username
         self.bio =  data.bio
-        self.profileImage = data.profileImage
     }
 }
 
-struct ProfileImage: Codable {
-    let small, medium, large: String
-}
