@@ -14,7 +14,7 @@ class OAuth2TokenStorage  {
         set {
             if let newValue = newValue {
                 keychain.set(newValue, forKey: tokenKey)
-            } 
+            }
         }
     }
     func removeKey() {
