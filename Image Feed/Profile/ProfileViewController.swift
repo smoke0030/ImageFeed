@@ -1,14 +1,17 @@
 import UIKit
 import Kingfisher
+import SwiftKeychainWrapper
 
 class ProfileViewController: UIViewController {
     
+    private let exitButton = UIButton()
     private let imageView = UIImageView(image: UIImage(named: "profile_image"))
     private let nameLabel = UILabel()
     private let loginLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let profileService =  ProfileService.shared
     private let profileImageService  = ProfileImageService.shared
+    private let oAuthTokenStorage = OAuth2TokenStorage.shared
     
     private var profileImageServiceObserver: NSObjectProtocol?
     
@@ -31,6 +34,7 @@ class ProfileViewController: UIViewController {
             }
         updateAvatar()
     }
+    
     
     private func updateAvatar(){
         guard let profileImageURL = profileImageService.avatarURL,
@@ -91,10 +95,10 @@ class ProfileViewController: UIViewController {
     }
     
     private func addExitButton() {
-        let exitButton = UIButton()
         exitButton.setImage(UIImage(systemName: "ipad.and.arrow.forward"), for: .normal)
         exitButton.tintColor = UIColor(named: "YP Red")
         exitButton.translatesAutoresizingMaskIntoConstraints = false
+        exitButton.addTarget(self, action: #selector(exitButtonAction) , for: .touchUpInside)
         view.addSubview(exitButton)
         NSLayoutConstraint.activate([
             exitButton.widthAnchor.constraint(equalToConstant: 44),
@@ -102,7 +106,11 @@ class ProfileViewController: UIViewController {
             exitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             exitButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
         ])
-        
+    }
+    
+    @objc func exitButtonAction() {
+        oAuthTokenStorage.removeKey()
+        print("key removed")
     }
     
 }
@@ -114,33 +122,5 @@ extension ProfileViewController {
         loginLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
     }
-    
-//    private func fetchProfile(token: String) {
-//        profileService.fetchProfile(token) { [weak self] result in
-//            guard let self = self else { return }
-//            switch result {
-//            case .success:
-//                
-//                updateProfileDetails(profile: profileService.profile)
-//            case .failure:
-//               
-//                
-//                break
-//            }
-//        }
-//    }
-    
-//    func fetchProfileImage(token: String) {
-//        guard let username = profileService.profile?.username else { return }
-//        profileImageService.fetchProfileImageURL(token: token, username: username) { result in
-//            switch result {
-//            case .success:
-//                print("Hih")
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//                
-//            }
-//        }
-//    }
     
 }

@@ -116,7 +116,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                                           preferredStyle: .alert)
         alert.addAction((UIAlertAction(title: "OK",
                                        style: .cancel)))
-        webViewVC?.present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
 }
