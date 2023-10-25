@@ -1,10 +1,3 @@
-//
-//  ProfileService.swift
-//  Image Feed
-//
-//  Created by Сергей on 16.10.2023.
-//
-
 import Foundation
 
 final class ProfileService {
@@ -18,7 +11,6 @@ final class ProfileService {
         assert(Thread.isMainThread)
         
         let request =  makeRequest(token: token)
-        
         
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>)  in
             guard let self = self else { return }
@@ -34,20 +26,14 @@ final class ProfileService {
         self.task = task
         task.resume()
         
-        
-        
     }
-        
-        
+    
         func makeRequest(token: String) -> URLRequest {
             guard let url = URL(string: "https://api.unsplash.com" + "/me") else { fatalError("Error of create URL") }
             var request = URLRequest(url: url)
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             return request
         }
-        
-        
-        
         
         func object(for request: URLRequest, completion: @escaping (Result<ProfileResult, Error>) -> Void) -> URLSessionTask {
             let decoder = JSONDecoder()

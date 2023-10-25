@@ -17,6 +17,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor(named: "ypBlack")
         addImageView()
         addNameLabel()
         addLoginLabel()
@@ -34,7 +35,6 @@ class ProfileViewController: UIViewController {
             }
         updateAvatar()
     }
-    
     
     private func updateAvatar(){
         guard let profileImageURL = profileImageService.avatarURL,
@@ -59,9 +59,7 @@ class ProfileViewController: UIViewController {
             imageView.heightAnchor.constraint(equalToConstant: 70),
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32)
-            
         ])
-        
     }
     
     private func addNameLabel() {
@@ -122,5 +120,4 @@ extension ProfileViewController {
         loginLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
     }
-    
 }

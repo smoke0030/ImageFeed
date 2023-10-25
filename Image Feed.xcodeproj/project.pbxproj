@@ -109,23 +109,47 @@
 		8478171B2A9B9ED3004F973F /* Image Feed */ = {
 			isa = PBXGroup;
 			children = (
+				8478171C2A9B9ED3004F973F /* AppDelegate.swift */,
+				8478171E2A9B9ED3004F973F /* SceneDelegate.swift */,
+				84F709592ADC613A00F739C4 /* UIBlockingProgressHUD.swift */,
 				84664E532ACC000500724B0E /* Models */,
 				845BAD1A2AC59A09003E8D4E /* Auth */,
 				84ECE4282ABB67A200B6A533 /* Single Image */,
 				84ECE4242AB98AFA00B6A533 /* Profile */,
 				84B66AFF2AB2E5C300F3EE1B /* ImagesList */,
-				84664E5A2AD5C18E00724B0E /* SplashViewController.swift */,
-				845BAD182AC585E4003E8D4E /* Constants.swift */,
-				8478171C2A9B9ED3004F973F /* AppDelegate.swift */,
-				8478171E2A9B9ED3004F973F /* SceneDelegate.swift */,
+				84838B962AE9763C005E0E67 /* SplashScreen */,
+				84838B972AE97669005E0E67 /* Tab Bar */,
+				84838B952AE9761D005E0E67 /* Helpers */,
 				847817222A9B9ED3004F973F /* Main.storyboard */,
 				847817252A9B9ED5004F973F /* Assets.xcassets */,
 				847817272A9B9ED5004F973F /* LaunchScreen.storyboard */,
 				8478172A2A9B9ED5004F973F /* Info.plist */,
-				84F709592ADC613A00F739C4 /* UIBlockingProgressHUD.swift */,
-				84838B932AE81756005E0E67 /* TabBarController.swift */,
 			);
 			path = "Image Feed";
+			sourceTree = "<group>";
+		};
+		84838B952AE9761D005E0E67 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				845BAD182AC585E4003E8D4E /* Constants.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		84838B962AE9763C005E0E67 /* SplashScreen */ = {
+			isa = PBXGroup;
+			children = (
+				84664E5A2AD5C18E00724B0E /* SplashViewController.swift */,
+			);
+			path = SplashScreen;
+			sourceTree = "<group>";
+		};
+		84838B972AE97669005E0E67 /* Tab Bar */ = {
+			isa = PBXGroup;
+			children = (
+				84838B932AE81756005E0E67 /* TabBarController.swift */,
+			);
+			path = "Tab Bar";
 			sourceTree = "<group>";
 		};
 		84B66AFF2AB2E5C300F3EE1B /* ImagesList */ = {

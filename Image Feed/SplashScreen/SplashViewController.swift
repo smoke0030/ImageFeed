@@ -1,14 +1,9 @@
-//
-//  SplashViewController.swift
-//  ImageFeed
-//
-//  Created by Андрей Чупрыненко on 01.10.2023.
-//
-
 import UIKit
 import ProgressHUD
 
 final class SplashViewController: UIViewController {
+    
+    
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let oauth2Service = OAuth2Service()
     private let oauth2TokenStorage = OAuth2TokenStorage()
@@ -18,14 +13,20 @@ final class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        setupSplash()
         
         if (oauth2TokenStorage.token != nil) {
             guard let token = oauth2TokenStorage.token else { return }
             fetchProfile(token: token)
             
-           
         } else {
-            performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: .main)
+            if let authViewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController {
+                authViewController.delegate = self
+                authViewController.modalPresentationStyle = .fullScreen
+                self.present(authViewController, animated: true)
+            }
         }
     }
     
@@ -35,9 +36,21 @@ final class SplashViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        view.backgroundColor = UIColor(named: "ypBlack")
         setNeedsStatusBarAppearanceUpdate()
+                
+    }
+    
+    private func setupSplash() {
+        let splashScreenLogo = UIImage(named: "auth_screen_logo")
+        let imageView = UIImageView(image: splashScreenLogo)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         
+        view.addSubview(imageView)
         
+        NSLayoutConstraint.activate([imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                                     imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+                                    ])
     }
     
     private func switchToTabBarController() {
@@ -69,8 +82,6 @@ extension SplashViewController: AuthViewControllerDelegate {
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             self.fetchOAuthToken(code)
-            
-            
         }
     }
     
@@ -81,10 +92,9 @@ extension SplashViewController: AuthViewControllerDelegate {
             case .success(let token):
                 self.fetchProfile(token: token)
                 UIBlockingProgressHUD.dismiss()
-            case .failure:
+            case .failure(let error):
                 UIBlockingProgressHUD.dismiss()
-                
-                
+                self.showAlert(with: error)
                 break
             }
         }
@@ -103,7 +113,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 UIBlockingProgressHUD.dismiss()
             case .failure(let error):
                 UIBlockingProgressHUD.dismiss()
-                showAlert(with: error)
+                self.showAlert(with: error)
                 break
             }
         }
@@ -114,8 +124,8 @@ extension SplashViewController: AuthViewControllerDelegate {
         let alert = UIAlertController(title: "Что-то пошло не так(",
                                       message: "Не удалось войти в систему",
                                           preferredStyle: .alert)
-        alert.addAction((UIAlertAction(title: "OK",
-                                       style: .cancel)))
+        alert.addAction(UIAlertAction(title: "OK",
+                                       style: .cancel))
         self.present(alert, animated: true, completion: nil)
     }
     

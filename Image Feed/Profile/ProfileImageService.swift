@@ -10,7 +10,6 @@ final class ProfileImageService {
     private (set) var avatarURL: String?
     private let profileService = ProfileService.shared
     
-    
     func fetchProfileImageURL(token: String, username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         
@@ -33,8 +32,6 @@ final class ProfileImageService {
         }
         self.task = task
         task.resume()
-        
-        
     }
     
     func makeRequest(token: String) -> URLRequest {
@@ -45,8 +42,7 @@ final class ProfileImageService {
         return request
     }
 }
-    
-    
+
     extension ProfileImageService {
         private func object(for request: URLRequest, comletion: @escaping (Result<UserResult, Error>) -> Void) -> URLSessionTask {
             return urlSession.data(for: request) { result in
@@ -58,7 +54,6 @@ final class ProfileImageService {
         }
     }
     
-    
     struct UserResult: Codable {
         let profileImage: ProfileImage
         
@@ -66,7 +61,6 @@ final class ProfileImageService {
             case profileImage = "profile_image"
         }
     }
-    
     
     struct ProfileImage: Codable {
         let medium: String
