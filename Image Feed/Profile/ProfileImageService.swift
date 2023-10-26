@@ -24,8 +24,7 @@ final class ProfileImageService {
                 completion(.success(self.avatarURL!))
                 NotificationCenter.default
                     .post(name: ProfileImageService.DidChangeNotification,
-                          object: self,
-                          userInfo: ["URL": self.avatarURL!])
+                          object: self)
             case .failure(let error):
                 print(error)
             }
@@ -35,11 +34,15 @@ final class ProfileImageService {
     }
     
     func makeRequest(token: String) -> URLRequest {
-        guard let username = profileService.profile?.username,
-              let url = URL(string: "https://api.unsplash.com/users/" + "\(username)") else { fatalError("Error of create URL") }
-        var request = URLRequest(url: url)
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        return request
+        var request: URLRequest?
+        if let username = profileService.profile?.username,
+           let url = URL(string: "https://api.unsplash.com/users/" + "\(username)") {
+            request = URLRequest(url: url)
+            request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        } else {
+             assertionFailure("Error of create URL")
+        }
+        return request!
     }
 }
 

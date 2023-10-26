@@ -20,18 +20,8 @@ final class OAuth2Service {
     func fetchAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void ) {
         
         assert(Thread.isMainThread)
-        if task != nil {
-            if lastCode  != code {
-                task?.cancel()
-            } else {
-                return
-            }
-        }else {
-            if lastCode == code {
-                return
-            }
-        }
-        
+        if lastCode == code { return }
+        task?.cancel()
         lastCode = code
         
         var components =  URLComponents(string: "https://unsplash.com/oauth/token")
@@ -69,16 +59,6 @@ final class OAuth2Service {
         
     }
 }
-
-//extension URLRequest {
-//    static func makeHTTPRequest(path: String,
-//                                httpMethod: String,
-//                                baseURL: URL = DefaultBaseURL) -> URLRequest {
-//        var request = URLRequest(url: URL(string: path, relativeTo: baseURL) ?? DefaultBaseURL)
-//        request.httpMethod  = httpMethod
-//        return request
-//    }
-//}
 
 //MARK: - decoder
 
