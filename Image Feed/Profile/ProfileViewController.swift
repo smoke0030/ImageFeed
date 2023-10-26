@@ -1,24 +1,58 @@
 import UIKit
+import Kingfisher
+import SwiftKeychainWrapper
 
 class ProfileViewController: UIViewController {
     
+    private let exitButton = UIButton()
     private let imageView = UIImageView(image: UIImage(named: "profile_image"))
     private let nameLabel = UILabel()
     private let loginLabel = UILabel()
     private let descriptionLabel = UILabel()
+    private let profileService =  ProfileService.shared
+    private let profileImageService  = ProfileImageService.shared
+    private let oAuthTokenStorage = OAuth2TokenStorage.shared
+    
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor(named: "ypBlack")
         addImageView()
         addNameLabel()
         addLoginLabel()
         addDescriptionLabel()
         addExitButton()
+        updateProfileDetails(profile: profileService.profile)
         
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(forName: ProfileImageService.DidChangeNotification,
+                         object: nil,
+                         queue: .main
+                         )  { [weak self] _ in
+                guard let self = self  else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
+    }
+    
+    private func updateAvatar(){
+        guard let profileImageURL = profileImageService.avatarURL,
+              let url = URL(string: profileImageURL)
+        else { return }
+        imageView.kf.indicatorType = .activity
+        let placeholderImage = UIImage(named: "placeholder")
+        imageView.kf.setImage(with: url, placeholder: placeholderImage, options: [])
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     private func addImageView() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 35
         view.addSubview(imageView)
         NSLayoutConstraint.activate([
             imageView.widthAnchor.constraint(equalToConstant: 70),
@@ -26,7 +60,6 @@ class ProfileViewController: UIViewController {
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32)
         ])
-        
     }
     
     private func addNameLabel() {
@@ -60,10 +93,10 @@ class ProfileViewController: UIViewController {
     }
     
     private func addExitButton() {
-        let exitButton = UIButton()
         exitButton.setImage(UIImage(systemName: "ipad.and.arrow.forward"), for: .normal)
         exitButton.tintColor = UIColor(named: "YP Red")
         exitButton.translatesAutoresizingMaskIntoConstraints = false
+        exitButton.addTarget(self, action: #selector(exitButtonAction) , for: .touchUpInside)
         view.addSubview(exitButton)
         NSLayoutConstraint.activate([
             exitButton.widthAnchor.constraint(equalToConstant: 44),
@@ -71,7 +104,20 @@ class ProfileViewController: UIViewController {
             exitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             exitButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
         ])
-        
     }
     
+    @objc func exitButtonAction() {
+        oAuthTokenStorage.removeKey()
+        print("key removed")
+    }
+    
+}
+
+extension ProfileViewController {
+    func updateProfileDetails(profile: Profile?) {
+        guard let profile = profileService.profile else {return}
+        nameLabel.text = profile.name
+        loginLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
+    }
 }
