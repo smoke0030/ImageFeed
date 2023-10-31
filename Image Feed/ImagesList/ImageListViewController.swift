@@ -3,6 +3,7 @@ import UIKit
 
 final class ImageListViewController: UIViewController {
     private var ShowSingleImageSegueIdentifier = "ShowSingleImage"
+    private var imageListService = ImageListService.shared
     
     @IBOutlet private var tableView: UITableView!
     
@@ -71,6 +72,11 @@ extension ImageListViewController: UITableViewDelegate {
         let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
     }
+    
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+////        guard indexPath.row + 1 == imageListService.photos.count else { return }
+////        imageListService.fetchPhotosNextPage()
+//    }
 }
 
 
