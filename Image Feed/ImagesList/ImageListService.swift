@@ -6,20 +6,21 @@ final class ImageListService {
     private init(){}
     private let urlSession = URLSession.shared
     private let oAuth2TokenStorage = OAuth2TokenStorage.shared
-    private var page: String?
+    private var page: Int?
     private (set) var photos: [Photo] = []
     private var task: URLSessionTask?
     private let dateFormatter = DateFormatter()
     var lastLoadedPage: Int?
     
-    func fetchPhotosNextPage(token: String) {
+    func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
         guard task == nil else { return }
         
-        let nextPage = lastLoadedPage == nil
+        page = lastLoadedPage == nil
             ? 1
             : lastLoadedPage! + 1
         
+        guard let token = oAuth2TokenStorage.token else { return }
         let request = makeRequest(token: token)
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
             DispatchQueue.main.async {
@@ -29,14 +30,15 @@ final class ImageListService {
                     for photo in photoResult {
                         self.photos.append(self.convert(model: photo))
                     }
-                    self.lastLoadedPage = nextPage
+                    self.lastLoadedPage = self.page
                     NotificationCenter.default
                         .post(name: ImageListService.DidChangeNotification,
-                              object: self,
-                              userInfo: ["Images" : self.photos])
+                              object: self
+//                              userInfo: ["Images" : self.photos]
+                        )
                     
                 case .failure(let error):
-                    assertionFailure("receiving image failed, \(error)")
+                    assertionFailure("Receiving image failed, \(error)")
                 }
                 self.task = nil
                 
@@ -62,10 +64,11 @@ final class ImageListService {
     
     func makeRequest(token: String) -> URLRequest {
         var components = URLComponents(string: "https://api.unsplash.com/photos")
-        components?.queryItems = [URLQueryItem(name: "page", value: page),
+        components?.queryItems = [URLQueryItem(name: "page", value: String(page!)),
                                   URLQueryItem(name: "per_page", value: "10")]
         
         guard let url = components?.url else { fatalError("URL create error") }
+        print(url)
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
