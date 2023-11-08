@@ -21,7 +21,6 @@ class SingleImageViewController: UIViewController {
     
     private func setImage() {
         UIBlockingProgressHUD.show()
-//        imageView.kf.indicatorType = .activity
         guard let imageURL = imageURL else {return}
         imageView.kf.setImage(with: imageURL) { [weak self] result in
             guard let self = self else { return }
@@ -57,9 +56,8 @@ class SingleImageViewController: UIViewController {
     }
     
     @IBAction func didTapShareButton(_ sender: Any) {
-        guard let image = imageView.image else { return }
         let share = UIActivityViewController(
-            activityItems: [image],
+            activityItems: [imageView.image as Any],
             applicationActivities: nil)
         present(share, animated: true)
     }

@@ -99,6 +99,7 @@ extension URLSession {
                 completion(response)
             }
     }
+    
 }
 //MARK: - enum's
 enum NetworkError: Error {

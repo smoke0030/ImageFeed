@@ -5,7 +5,6 @@ final class ImageListViewController: UIViewController {
     private var ShowSingleImageSegueIdentifier = "ShowSingleImage"
     private var imageListService = ImageListService.shared
     private var photos: [Photo] = []
-    private let dateFormatter = DateFormatter()
     var imageListServiceObserver: NSObjectProtocol?
     
     @IBOutlet private var tableView: UITableView!
@@ -48,8 +47,13 @@ final class ImageListViewController: UIViewController {
         }
         
         guard let labelDate = photos[indexPath.row].createdAt else { return }
-        let date = dateFormatter.fetchDate(dateString: labelDate)
+        let date = DateFormatter().fetchDate(dateString: labelDate)
         cell.dateLabel.text = date
+        
+        let isLiked = imageListService.photos[indexPath.row].isLiked == false
+        let like = isLiked ? UIImage(named: "no_active") : UIImage(named: "Active")
+        cell.likeButton.setImage(like, for: .normal)
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -110,10 +114,12 @@ extension ImageListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: ImageListCell.reuseIdentifier, for: indexPath)
         guard let imageListCell = cell as? ImageListCell else {
             return UITableViewCell()
         }
+        imageListCell.delegate = self
         configureCell(for: imageListCell, with: indexPath)
         return imageListCell
     }
@@ -134,4 +140,24 @@ extension DateFormatter {
         }
             return formattedDateString
     }
+}
+extension ImageListViewController: ImageListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImageListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else {return}
+        let photo = photos[indexPath.row]
+        UIBlockingProgressHUD.show()
+        imageListService.changeLike(photoID: photo.id, isLike: photo.isLiked) { result in
+            switch result {
+            case .success:
+                self.photos = self.imageListService.photos
+                cell.setIsLiked(isLiked: self.photos[indexPath.row].isLiked)
+                UIBlockingProgressHUD.dismiss()
+                
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+            }
+        }
+    }
+    
+    
 }

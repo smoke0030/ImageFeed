@@ -34,7 +34,6 @@ final class ImageListService {
                     NotificationCenter.default
                         .post(name: ImageListService.DidChangeNotification,
                               object: self
-//                              userInfo: ["Images" : self.photos]
                         )
                     
                 case .failure(let error):
@@ -46,15 +45,12 @@ final class ImageListService {
         }
         self.task = task
         task.resume()
-        
-        
     }
             
-    
     func convert(model: PhotoResult) -> Photo {
         return Photo(id: model.id,
                      size: CGSize(width: model.width, height: model.height),
-                     createdAt: model.createdAt ?? "",
+                     createdAt: model.createdAt,
                      welcomeDescription: model.description,
                      thumbImageURL: model.urls.thumb,
                      largeImageURL: model.urls.full,
@@ -68,12 +64,67 @@ final class ImageListService {
                                   URLQueryItem(name: "per_page", value: "10")]
         
         guard let url = components?.url else { fatalError("URL create error") }
-        print(url)
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
         
         }
+    
+    func changeLike(photoID: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        task?.cancel()
+        
+        guard let token = oAuth2TokenStorage.token else { return }
+        var request: URLRequest?
+        if isLike {
+            request = deleteLike(token: token, photoID: photoID)
+        } else {
+            request = postLike(token: token, photoID: photoID)
+        }
+        guard let request = request else {  return }
+        
+        let task = urlSession.objectTask(for: request) { [weak self] (result:Result<LikePhoto, Error>) in
+            guard let self = self else {  return }
+            self.task = nil
+            switch result {
+            case .success(let photoResult):
+                let isLiked = photoResult.photo.isLiked
+                if let index = self.photos.firstIndex(where: { $0.id == photoResult.photo.id }) {
+                    let photo = self.photos[index]
+                    let newPhoto = Photo(id: photo.id,
+                                         size: photo.size,
+                                         createdAt: photo.createdAt,
+                                         welcomeDescription: photo.welcomeDescription,
+                                         thumbImageURL: photo.thumbImageURL,
+                                         largeImageURL: photo.largeImageURL,
+                                         isLiked: isLiked)
+                    self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
+                }
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+        self.task = task
+        task.resume()
+        
+    }
+    
+    func deleteLike(token: String, photoID: String) -> URLRequest? {
+        var request = URLRequest.makeHTTPRequest(path: "photos/\(photoID)/like",
+                                                       httMethod: "DELETE",
+                                                       baseURL: URL(string: "\(DefaultBaseApiURL)")!)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return request
+    }
+    
+    func postLike(token: String, photoID: String) -> URLRequest? {
+        var request = URLRequest.makeHTTPRequest(path: "photos/\(photoID)/like",
+                                                       httMethod: "POST",
+                                                       baseURL: URL(string: "\(DefaultBaseApiURL)")!)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return request
+    }
 }
 
 extension ImageListService {
@@ -87,5 +138,22 @@ extension ImageListService {
             }
             completion(response)
         }
+    }
+}
+extension URLRequest {
+    static func makeHTTPRequest (
+        path:  String,
+        httMethod: String,
+        baseURL: URL = DefaultBaseURL) -> URLRequest {
+            var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
+            request.httpMethod = httMethod
+            return request
+        }
+}
+extension Array {
+    func withReplaced(itemAt: Int, newValue:Photo) -> [Photo] {
+        var photos = ImageListService.shared.photos
+        photos.replaceSubrange(itemAt...itemAt, with: [newValue])
+        return photos
     }
 }
