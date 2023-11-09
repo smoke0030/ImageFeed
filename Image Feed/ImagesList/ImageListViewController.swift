@@ -6,6 +6,7 @@ final class ImageListViewController: UIViewController {
     private var imageListService = ImageListService.shared
     private var photos: [Photo] = []
     var imageListServiceObserver: NSObjectProtocol?
+    let dateFormatted = DateFormatter()
     
     @IBOutlet private var tableView: UITableView!
     
@@ -15,12 +16,11 @@ final class ImageListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tableView.delegate = self
         
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         imageListServiceObserver = NotificationCenter.default.addObserver(
-            forName: ImageListService.DidChangeNotification,
+            forName: ImageListService.didChangeNotification,
             object: nil,
             queue: .main) { [weak self] _ in
                 guard let self = self else { return }
@@ -32,12 +32,12 @@ final class ImageListViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: ImageListService.DidChangeNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: ImageListService.didChangeNotification, object: nil)
     }
-
+    
     func configureCell(for cell: ImageListCell, with indexPath: IndexPath) {
-        let imageURL = photos[indexPath.row].thumbImageURL!
-            let url = URL(string: imageURL)
+        guard let imageURL = photos[indexPath.row].thumbImageURL else { return }
+        let url = URL(string: imageURL)
         cell.imageCell.kf.indicatorType = .activity
         let placeholder = UIImage(named: "Stub")
         cell.imageCell.kf.setImage(with: url, placeholder: placeholder) { [weak self] _ in
@@ -46,9 +46,8 @@ final class ImageListViewController: UIViewController {
             cell.imageCell.kf.indicatorType = .none
         }
         
-        guard let labelDate = photos[indexPath.row].createdAt else { return }
-        let date = DateFormatter().fetchDate(dateString: labelDate)
-        cell.dateLabel.text = date
+        let labelDate = photos[indexPath.row].createdAt
+        cell.dateLabel.text = fetchDate(dateString: labelDate ?? Date())
         
         let isLiked = imageListService.photos[indexPath.row].isLiked == false
         let like = isLiked ? UIImage(named: "no_active") : UIImage(named: "Active")
@@ -61,15 +60,26 @@ final class ImageListViewController: UIViewController {
             if let viewController = segue.destination as? SingleImageViewController {
                 let indexPath = sender as! IndexPath
                 let photo = photos[indexPath.row]
-                guard let imageURL = URL(string: photo.largeImageURL!) else { return }
+                guard let url = photo.largeImageURL,
+                      let imageURL = URL(string: url) else { return }
                 viewController.imageURL = imageURL
             }
         } else {
             super.prepare(for: segue, sender: sender)
         }
     }
+    private func fetchDate(dateString: Date) -> String {
+        var formattedDateString: String?
+        dateFormatted.dateFormat = "dd MMMM yyyy"
+        dateFormatted.locale =  Locale(identifier: "ru_RU")
+        formattedDateString = dateFormatted.string(from: dateString)
+        guard let formattedDateString = formattedDateString else {
+            return ""
+        }
+        return formattedDateString
+    }
     
-    func updateTableViewAnimate() {
+    private func updateTableViewAnimate() {
         let oldCount = photos.count
         let newCount = imageListService.photos.count
         photos = imageListService.photos
@@ -82,10 +92,7 @@ final class ImageListViewController: UIViewController {
                 tableView.insertRows(at: indexPaths, with: .bottom)
             } completion: { _ in }
         }
-        
     }
-    
-    
 }
 
 extension ImageListViewController: UITableViewDelegate {
@@ -98,7 +105,6 @@ extension ImageListViewController: UITableViewDelegate {
         let size = CGSize(width: cell.size.width, height: cell.size.height)
         let aspectRatio = size.width / size.height
         return tableView.frame.width / aspectRatio
-        
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -106,7 +112,6 @@ extension ImageListViewController: UITableViewDelegate {
         imageListService.fetchPhotosNextPage()
     }
 }
-
 
 extension ImageListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -122,23 +127,6 @@ extension ImageListViewController: UITableViewDataSource {
         imageListCell.delegate = self
         configureCell(for: imageListCell, with: indexPath)
         return imageListCell
-    }
-    
-    
-    
-}
-extension DateFormatter {
-    func fetchDate(dateString: String) -> String {
-        var formattedDateString: String!
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        if let date = dateFormatter.date(from: dateString) {
-            let newDateFormatter = DateFormatter()
-            newDateFormatter.dateFormat = "dd MMMM yyyy 'г.'"
-            newDateFormatter.locale =  Locale(identifier: "ru_RU")
-            formattedDateString = newDateFormatter.string(from: date)
-        }
-            return formattedDateString
     }
 }
 extension ImageListViewController: ImageListCellDelegate {
@@ -158,6 +146,4 @@ extension ImageListViewController: ImageListCellDelegate {
             }
         }
     }
-    
-    
 }
