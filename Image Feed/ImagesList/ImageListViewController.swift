@@ -5,8 +5,8 @@ final class ImageListViewController: UIViewController {
     private var ShowSingleImageSegueIdentifier = "ShowSingleImage"
     private var imageListService = ImageListService.shared
     private var photos: [Photo] = []
-    var imageListServiceObserver: NSObjectProtocol?
-    let dateFormatted = DateFormatter()
+    private var imageListServiceObserver: NSObjectProtocol?
+    private lazy var dateFormatted = DateFormatter()
     
     @IBOutlet private var tableView: UITableView!
     
