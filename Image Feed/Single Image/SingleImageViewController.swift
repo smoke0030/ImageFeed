@@ -6,15 +6,32 @@ class SingleImageViewController: UIViewController {
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var scrollView: UIScrollView!
     
-    var image: UIImage!
+    
+    
+//    var image: UIImage!
+    var imageURL: URL!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
-        imageView.image = image
-        rescaleAndCenterImageInScrollView(image: image)
+        setImage()
         
+    }
+    
+    private func setImage() {
+        UIBlockingProgressHUD.show()
+        guard let imageURL = imageURL else {return}
+        imageView.kf.setImage(with: imageURL) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let imageResult):
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure:
+                print("error")
+            }
+            UIBlockingProgressHUD.dismiss()
+        }
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
@@ -39,9 +56,8 @@ class SingleImageViewController: UIViewController {
     }
     
     @IBAction func didTapShareButton(_ sender: Any) {
-        guard let image = image else { return }
         let share = UIActivityViewController(
-            activityItems: [image],
+            activityItems: [imageView.image as Any],
             applicationActivities: nil)
         present(share, animated: true)
     }

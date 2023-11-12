@@ -1,6 +1,7 @@
 import UIKit
 import Kingfisher
 import SwiftKeychainWrapper
+import WebKit
 
 class ProfileViewController: UIViewController {
     
@@ -27,13 +28,15 @@ class ProfileViewController: UIViewController {
         
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(forName: ProfileImageService.DidChangeNotification,
-                         object: nil,
+                         object: self,
                          queue: .main
                          )  { [weak self] _ in
                 guard let self = self  else { return }
                 self.updateAvatar()
             }
         updateAvatar()
+        
+        
     }
     
     private func updateAvatar(){
@@ -43,10 +46,6 @@ class ProfileViewController: UIViewController {
         imageView.kf.indicatorType = .activity
         let placeholderImage = UIImage(named: "placeholder")
         imageView.kf.setImage(with: url, placeholder: placeholderImage, options: [])
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
     }
     
     private func addImageView() {
@@ -70,6 +69,7 @@ class ProfileViewController: UIViewController {
         nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
         nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8).isActive =  true
+        
     }
     
     private func addLoginLabel() {
@@ -106,9 +106,26 @@ class ProfileViewController: UIViewController {
         ])
     }
     
-    @objc func exitButtonAction() {
+    private func clean() {
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
+        }
+    }
+    
+    private func logout()  {
         oAuthTokenStorage.removeKey()
-        print("key removed")
+        clean()
+        tabBarController?.dismiss(animated: true)
+        guard let window = UIApplication.shared.windows.first else {
+            fatalError("error") }
+        window.rootViewController = SplashViewController()
+    }
+    
+    @objc func exitButtonAction() {
+        showAlert()
     }
     
 }
@@ -119,5 +136,23 @@ extension ProfileViewController {
         nameLabel.text = profile.name
         loginLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
+    }
+    
+    private func showAlert() {
+        let alert = UIAlertController(
+            title: "До встречи!",
+            message: "Уверены, что хотите выйти?",
+            preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Нет", 
+                                      style: .cancel))
+        
+        alert.addAction(UIAlertAction(title: "Да",
+                                      style: .default, handler: { [weak self] _ in
+            guard let self = self else { return }
+            logout()
+        }))
+        
+        self.present(alert, animated: true)
     }
 }

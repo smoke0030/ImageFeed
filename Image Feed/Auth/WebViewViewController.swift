@@ -46,10 +46,10 @@ final class WebViewViewController: UIViewController {
 private extension WebViewViewController {
     func loadWebView() {
         var components = URLComponents(string: "https://unsplash.com/oauth/authorize")
-        components?.queryItems = [URLQueryItem(name: "client_id", value: AccessKey),
-                                  URLQueryItem(name: "redirect_uri", value: RedirectURI),
+        components?.queryItems = [URLQueryItem(name: "client_id", value: accessKey),
+                                  URLQueryItem(name: "redirect_uri", value: redirectURI),
                                   URLQueryItem(name: "response_type", value: "code"),
-                                  URLQueryItem(name: "scope", value: AccessScope)]
+                                  URLQueryItem(name: "scope", value: accessScope)]
         if let url = components?.url {
             let request = URLRequest(url: url)
             webView.load(request)
@@ -79,3 +79,4 @@ extension WebViewViewController: WKNavigationDelegate {
         }
     }
 }
+
