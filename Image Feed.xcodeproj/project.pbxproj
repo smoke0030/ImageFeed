@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		84367AF22AEC2BC000E40AB2 /* ImageListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84367AF12AEC2BC000E40AB2 /* ImageListService.swift */; };
+		844035DA2B0244BB0073B14F /* WebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844035D92B0244BB0073B14F /* WebViewPresenter.swift */; };
 		845BAD192AC585E5003E8D4E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845BAD182AC585E4003E8D4E /* Constants.swift */; };
 		845BAD1C2AC59A4E003E8D4E /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845BAD1B2AC59A4E003E8D4E /* AuthViewController.swift */; };
 		845BAD1E2AC59C5E003E8D4E /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845BAD1D2AC59C5E003E8D4E /* WebViewViewController.swift */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		84367AF12AEC2BC000E40AB2 /* ImageListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageListService.swift; sourceTree = "<group>"; };
+		844035D92B0244BB0073B14F /* WebViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenter.swift; sourceTree = "<group>"; };
 		845BAD182AC585E4003E8D4E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		845BAD1B2AC59A4E003E8D4E /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		845BAD1D2AC59C5E003E8D4E /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 		845BAD1A2AC59A09003E8D4E /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				844035D92B0244BB0073B14F /* WebViewPresenter.swift */,
 				845BAD1B2AC59A4E003E8D4E /* AuthViewController.swift */,
 				845BAD1D2AC59C5E003E8D4E /* WebViewViewController.swift */,
 				84664E512ACBFFD400724B0E /* OAuth2Service.swift */,
@@ -282,6 +285,7 @@
 				8478171D2A9B9ED3004F973F /* AppDelegate.swift in Sources */,
 				845BAD1E2AC59C5E003E8D4E /* WebViewViewController.swift in Sources */,
 				84664E572ACC097200724B0E /* OAuth2TokenStorage.swift in Sources */,
+				844035DA2B0244BB0073B14F /* WebViewPresenter.swift in Sources */,
 				8478171F2A9B9ED3004F973F /* SceneDelegate.swift in Sources */,
 				84F7095A2ADC613A00F739C4 /* UIBlockingProgressHUD.swift in Sources */,
 				84F7095C2ADDA07600F739C4 /* ProfileService.swift in Sources */,
