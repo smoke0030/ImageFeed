@@ -113,23 +113,18 @@ final class ImageListService {
     
     
     func deleteLike(token: String, photoID: String) -> URLRequest? {
-        guard let baseURL = defaultBaseApiURL else {
-            return nil
-        }
         var request = URLRequest.makeHTTPRequest(path: "photos/\(photoID)/like",
                                                  httMethod: "DELETE",
-                                                 baseURL: baseURL)
+                                                 baseURL: AuthConfiguration.standart.defaultBaseApiURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
     
     func postLike(token: String, photoID: String) -> URLRequest? {
-        guard let baseURL = defaultBaseApiURL else {
-            return nil
-        }
+    
         var request = URLRequest.makeHTTPRequest(path: "photos/\(photoID)/like",
                                                  httMethod: "POST",
-                                                 baseURL: baseURL)
+                                                 baseURL: AuthConfiguration.standart.defaultBaseApiURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
@@ -152,7 +147,7 @@ extension URLRequest {
     static func makeHTTPRequest (
         path:  String,
         httMethod: String,
-        baseURL: URL = defaultBaseURL) -> URLRequest {
+        baseURL: URL = AuthConfiguration.standart.defaultBaseURL) -> URLRequest {
             var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
             request.httpMethod = httMethod
             return request
