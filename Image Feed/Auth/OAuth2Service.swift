@@ -53,10 +53,7 @@ final class OAuth2Service {
             }
             self.task = task
             task.resume()
-            
         }
-        
-        
     }
 }
 
@@ -91,13 +88,13 @@ extension URLSession {
     }
     
     func objectTask<T: Decodable> (for request: URLRequest, completion: @escaping (Result<T, Error>) -> Void)
-        -> URLSessionTask {
-            return data(for: request) { result in
-                let response = result.flatMap { data -> Result<T, Error> in
-                    Result {try  JSONDecoder().decode(T.self, from: data) }
-                }
-                completion(response)
+    -> URLSessionTask {
+        return data(for: request) { result in
+            let response = result.flatMap { data -> Result<T, Error> in
+                Result {try  JSONDecoder().decode(T.self, from: data) }
             }
+            completion(response)
+        }
     }
     
 }

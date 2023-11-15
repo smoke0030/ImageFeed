@@ -3,7 +3,12 @@ import Kingfisher
 import SwiftKeychainWrapper
 import WebKit
 
-class ProfileViewController: UIViewController {
+protocol ProfileViewControllerProtocol {
+    
+    func updateProfileDetails(profile: Profile?)
+}
+
+class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
     
     private let exitButton = UIButton()
     private let imageView = UIImageView(image: UIImage(named: "profile_image"))
@@ -35,11 +40,9 @@ class ProfileViewController: UIViewController {
                 self.updateAvatar()
             }
         updateAvatar()
-        
-        
     }
     
-    private func updateAvatar(){
+    private func updateAvatar() {
         guard let profileImageURL = profileImageService.avatarURL,
               let url = URL(string: profileImageURL)
         else { return }
@@ -69,7 +72,6 @@ class ProfileViewController: UIViewController {
         nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
         nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8).isActive =  true
-        
     }
     
     private func addLoginLabel() {
@@ -127,7 +129,6 @@ class ProfileViewController: UIViewController {
     @objc func exitButtonAction() {
         showAlert()
     }
-    
 }
 
 extension ProfileViewController {

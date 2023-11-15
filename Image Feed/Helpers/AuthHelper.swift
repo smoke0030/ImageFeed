@@ -14,7 +14,7 @@ class AuthHelper: AuthHelperProtocol {
     }
     
     func authURL() -> URL {
-        var components = URLComponents(string: "https://unsplash.com/oauth/authorize")
+        var components = URLComponents(string: AuthConfiguration.standart.authURLString)
         components?.queryItems = [URLQueryItem(name: "client_id", value: AuthConfiguration.standart.accessKey),
                                   URLQueryItem(name: "redirect_uri", value: AuthConfiguration.standart.redirectURI),
                                   URLQueryItem(name: "response_type", value: "code"),
