@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 protocol WebViewPresenterProtocol {
     var view: WebViewViewControllerProtocol? { get set }
@@ -10,6 +10,7 @@ protocol WebViewPresenterProtocol {
 final class WebViewPresenter: WebViewPresenterProtocol {
     
     weak var view: WebViewViewControllerProtocol?
+    
     var authHelper: AuthHelperProtocol
     
     init(authHelper: AuthHelperProtocol) {
