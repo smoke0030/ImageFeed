@@ -10,6 +10,8 @@ protocol ProfileViewControllerProtocol: AnyObject {
     var loginLabel: UILabel { get set }
     var descriptionLabel: UILabel { get set }
     func updateAvatar(url: URL)
+    func setupViews()
+    func setupConstraints()
 }
 
 class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
@@ -110,7 +112,7 @@ class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
         return button
     }()
     
-    private func showAlert() {
+    func showAlert() {
         let alert = presenter.showAlert()
         present(alert, animated: true)
     }

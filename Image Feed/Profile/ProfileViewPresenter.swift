@@ -1,6 +1,4 @@
-import UIKit
 import WebKit
-import Kingfisher
 
 protocol ProfileViewPresenterProtocol {
     func showAlert() -> UIAlertController

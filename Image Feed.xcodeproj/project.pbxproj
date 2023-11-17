@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		84318A402B068C3A00F65C0F /* ProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84318A3F2B068C3900F65C0F /* ProfileTests.swift */; };
 		84367AF22AEC2BC000E40AB2 /* ImageListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84367AF12AEC2BC000E40AB2 /* ImageListService.swift */; };
 		844035DA2B0244BB0073B14F /* WebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844035D92B0244BB0073B14F /* WebViewPresenter.swift */; };
 		844035DC2B03EDA20073B14F /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844035DB2B03EDA20073B14F /* AuthHelper.swift */; };
@@ -49,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		84318A3F2B068C3900F65C0F /* ProfileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTests.swift; sourceTree = "<group>"; };
 		84367AF12AEC2BC000E40AB2 /* ImageListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageListService.swift; sourceTree = "<group>"; };
 		844035D92B0244BB0073B14F /* WebViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenter.swift; sourceTree = "<group>"; };
 		844035DB2B03EDA20073B14F /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
@@ -57,7 +59,7 @@
 		845BAD182AC585E4003E8D4E /* AuthConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthConfiguration.swift; sourceTree = "<group>"; };
 		845BAD1B2AC59A4E003E8D4E /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		845BAD1D2AC59C5E003E8D4E /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
-		845F82FC2B04051A00089945 /* Image Feed.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Image Feed.xctestplan"; sourceTree = SOURCE_ROOT; };
+		845F82FC2B04051A00089945 /* Image Feed.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Image Feed.xctestplan"; sourceTree = SOURCE_ROOT; };
 		845F82FD2B04CF9500089945 /* ProfileViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewPresenter.swift; sourceTree = "<group>"; };
 		84664E512ACBFFD400724B0E /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
 		84664E542ACC001B00724B0E /* OAuthTokenResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenResponseBody.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				844035E32B03F6D60073B14F /* WebViewTests.swift */,
+				84318A3F2B068C3900F65C0F /* ProfileTests.swift */,
 				845F82FC2B04051A00089945 /* Image Feed.xctestplan */,
 			);
 			path = "Image FeedTests";
@@ -338,6 +341,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				844035E42B03F6D60073B14F /* WebViewTests.swift in Sources */,
+				84318A402B068C3A00F65C0F /* ProfileTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
