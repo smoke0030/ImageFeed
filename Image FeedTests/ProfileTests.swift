@@ -7,7 +7,6 @@ final class ProfileTests: XCTestCase {
     func testProfileVCCallsViewDidLoad() {
         //given
         let profileService = ProfileService()
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = ProfileViewController()
         let presenter = ProfileViewPresenterSpy(profileService: profileService)
         viewController.presenter = presenter

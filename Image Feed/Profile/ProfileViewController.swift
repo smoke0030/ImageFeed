@@ -1,6 +1,4 @@
 import UIKit
-import Kingfisher
-import SwiftKeychainWrapper
 import WebKit
 
 protocol ProfileViewControllerProtocol: AnyObject {
@@ -20,8 +18,6 @@ class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
         return ProfileViewPresenter()
     }()
     
-    private let profileService =  ProfileService.shared
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -31,9 +27,9 @@ class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
     
     func setupConstraints() {
         NSLayoutConstraint.activate([imageView.widthAnchor.constraint(equalToConstant: 70),
-                                    imageView.heightAnchor.constraint(equalToConstant: 70),
-                                    imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                                    imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
+                                     imageView.heightAnchor.constraint(equalToConstant: 70),
+                                     imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                                     imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
                                      nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
                                      nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
                                      loginLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -44,7 +40,7 @@ class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
                                      exitButton.heightAnchor.constraint(equalToConstant: 44),
                                      exitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
                                      exitButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
-                                     ])
+                                    ])
     }
     
     func updateAvatar(url: URL) {
