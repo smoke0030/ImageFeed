@@ -1,7 +1,7 @@
 import WebKit
 
 protocol ProfileViewPresenterProtocol {
-    func showAlert() -> UIAlertController
+    func makeAlert() -> UIAlertController
     func viewDidLoad()
     func updateProfileDetails(profile: Profile?)
     func logout()
@@ -47,7 +47,7 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
         view?.descriptionLabel.text = profile.bio
     }
     
-    func showAlert() -> UIAlertController {
+    func makeAlert() -> UIAlertController {
         let alert = UIAlertController(
             title: "До встречи!",
             message: "Уверены, что хотите выйти?",

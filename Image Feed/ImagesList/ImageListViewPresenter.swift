@@ -46,5 +46,4 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
             }
         ImageListService.shared.fetchPhotosNextPage()
     }
-    
 }

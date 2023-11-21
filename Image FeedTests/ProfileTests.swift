@@ -95,7 +95,7 @@ final class ProfileViewPresenterSpy: ProfileViewPresenterProtocol {
         self.profileService = profileService
     }
     
-    func showAlert() -> UIAlertController {
+    func makeAlert() -> UIAlertController {
         UIAlertController()
     }
     

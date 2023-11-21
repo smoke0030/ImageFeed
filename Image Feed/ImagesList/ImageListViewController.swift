@@ -11,7 +11,7 @@ protocol ImageListViewControllerProtocol: AnyObject {
 final class ImageListViewController: UIViewController & ImageListViewControllerProtocol {
     private var ShowSingleImageSegueIdentifier = "ShowSingleImage"
     private var imageListService = ImageListService.shared
-//    var photos: [Photo] = []
+    //    var photos: [Photo] = []
     var imageListServiceObserver: NSObjectProtocol?
     
     var presenter: ImageListViewPresenterProtocol = {
@@ -79,6 +79,12 @@ final class ImageListViewController: UIViewController & ImageListViewControllerP
             } completion: { _ in }
         }
     }
+    
+    func checkCompletedList(_ indexPath: IndexPath) {
+        if imageListService.photos.isEmpty || (indexPath.row + 1 == imageListService.photos.count) {
+            imageListService.fetchPhotosNextPage()
+        }
+    }
 }
 
 extension ImageListViewController: UITableViewDelegate {
@@ -94,10 +100,12 @@ extension ImageListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard indexPath.row + 1 == imageListService.photos.count else { return }
-        imageListService.fetchPhotosNextPage()
+//        guard indexPath.row + 1 == imageListService.photos.count else { return }
+//        imageListService.fetchPhotosNextPage()
+        checkCompletedList(indexPath)
     }
 }
+
 
 extension ImageListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

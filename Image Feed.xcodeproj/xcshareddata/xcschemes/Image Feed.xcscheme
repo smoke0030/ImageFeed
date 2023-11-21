@@ -26,22 +26,28 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
-      <TestPlans>
-         <TestPlanReference
-            reference = "container:Image Feed.xctestplan"
-            default = "YES">
-         </TestPlanReference>
-      </TestPlans>
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldAutocreateTestPlan = "YES">
       <Testables>
          <TestableReference
-            skipped = "YES"
+            skipped = "NO"
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "844035E02B03F6D60073B14F"
-               BuildableName = "Image FeedTests.xctest"
-               BlueprintName = "Image FeedTests"
+               BlueprintIdentifier = "84D7F0502B0B6AFC0091BCD5"
+               BuildableName = "Image FeedTests1.xctest"
+               BlueprintName = "Image FeedTests1"
+               ReferencedContainer = "container:Image Feed.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "84D7F0612B0B6C450091BCD5"
+               BuildableName = "Image FeedUITests1.xctest"
+               BlueprintName = "Image FeedUITests1"
                ReferencedContainer = "container:Image Feed.xcodeproj">
             </BuildableReference>
          </TestableReference>

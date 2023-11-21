@@ -102,6 +102,7 @@ class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
                                            target: self,
                                            action: #selector(exitButtonAction)
         )
+        button.accessibilityIdentifier = "exitButton"
         button.tintColor = UIColor(named: "YP Red")
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -109,7 +110,7 @@ class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
     }()
     
     func showAlert() {
-        let alert = presenter.showAlert()
+        let alert = presenter.makeAlert()
         present(alert, animated: true)
     }
     

@@ -13,6 +13,8 @@ final class ImageListService {
     private var lastLoadedPage: Int = 0
     
     func fetchPhotosNextPage() {
+//        task = nil
+        print(photos.count)
         assert(Thread.isMainThread)
         guard task == nil else { return }
         

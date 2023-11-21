@@ -6,6 +6,8 @@
 	<dict>
 		<key>Image Feed.xcscheme_^#shared#^_</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
@@ -13,6 +15,11 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>844035E02B03F6D60073B14F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8459620B2B0A8F3900756B7D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
