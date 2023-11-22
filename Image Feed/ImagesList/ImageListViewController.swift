@@ -5,13 +5,11 @@ import Kingfisher
 protocol ImageListViewControllerProtocol: AnyObject {
     var presenter: ImageListViewPresenterProtocol { get set }
     func updateTableViewAnimate()
-//    var photos: [Photo] {get set}
 }
 
 final class ImageListViewController: UIViewController & ImageListViewControllerProtocol {
     private var ShowSingleImageSegueIdentifier = "ShowSingleImage"
     private var imageListService = ImageListService.shared
-    //    var photos: [Photo] = []
     var imageListServiceObserver: NSObjectProtocol?
     
     var presenter: ImageListViewPresenterProtocol = {
@@ -81,8 +79,10 @@ final class ImageListViewController: UIViewController & ImageListViewControllerP
     }
     
     func checkCompletedList(_ indexPath: IndexPath) {
-        if imageListService.photos.isEmpty || (indexPath.row + 1 == imageListService.photos.count) {
-            imageListService.fetchPhotosNextPage()
+        if !ProcessInfo.processInfo.arguments.contains("testMode") {
+            if imageListService.photos.isEmpty || (indexPath.row + 1 == imageListService.photos.count) {
+                imageListService.fetchPhotosNextPage()
+            }
         }
     }
 }
@@ -100,8 +100,6 @@ extension ImageListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        guard indexPath.row + 1 == imageListService.photos.count else { return }
-//        imageListService.fetchPhotosNextPage()
         checkCompletedList(indexPath)
     }
 }
