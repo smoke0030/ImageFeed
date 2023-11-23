@@ -13,13 +13,13 @@ final class ImageListService {
     private var lastLoadedPage: Int = 0
     
     func fetchPhotosNextPage() {
-//        task = nil
+        //        task = nil
         print(photos.count)
         assert(Thread.isMainThread)
         guard task == nil else { return }
         
         page = lastLoadedPage == 0 ? 1 : lastLoadedPage + 1
-
+        
         guard let token = oAuth2TokenStorage.token else { return }
         let request = makeRequest(token: token)
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
@@ -57,7 +57,6 @@ final class ImageListService {
                      largeImageURL: model.urls.full,
                      isLiked: model.isLiked)
     }
-    
     
     func makeRequest(token: String) -> URLRequest {
         var components = URLComponents(string: "https://api.unsplash.com/photos")
@@ -113,7 +112,6 @@ final class ImageListService {
         
     }
     
-    
     func deleteLike(token: String, photoID: String) -> URLRequest? {
         var request = URLRequest.makeHTTPRequest(path: "photos/\(photoID)/like",
                                                  httMethod: "DELETE",
@@ -123,7 +121,7 @@ final class ImageListService {
     }
     
     func postLike(token: String, photoID: String) -> URLRequest? {
-    
+        
         var request = URLRequest.makeHTTPRequest(path: "photos/\(photoID)/like",
                                                  httMethod: "POST",
                                                  baseURL: AuthConfiguration.standart.defaultBaseApiURL)

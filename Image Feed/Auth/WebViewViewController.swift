@@ -6,7 +6,6 @@ protocol WebViewViewControllerProtocol: AnyObject {
     func load(request: URLRequest)
     func setProgressValue(_ newValue: Float)
     func setProgressHidden(_ isHidden: Bool)
-    
 }
 
 protocol WebViewViewControllerDelegate: AnyObject {

@@ -9,6 +9,11 @@ import XCTest
 
 final class Image_FeedUITests1: XCTestCase {
     
+    let yourEmail = ""
+    let yourPassword = ""
+    let yourNameLabel = ""
+    let yourLoginLabel = ""
+    
     private let app = XCUIApplication()
     
     override func setUpWithError() throws {
@@ -16,8 +21,6 @@ final class Image_FeedUITests1: XCTestCase {
         continueAfterFailure = false
         app.launchArguments = ["testMode"]
         app.launch()
-        
-        
     }
     
     func testAuth() throws {
@@ -29,27 +32,29 @@ final class Image_FeedUITests1: XCTestCase {
         
         let loginTextField = webView.descendants(matching: .textField).element
         
-        XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
+        XCTAssertTrue(loginTextField.waitForExistence(timeout: 3))
         loginTextField.tap()
         
-        sleep(3)
+        sleep(2)
         
-        loginTextField.typeText("xchyagsf@gmail.com")
+        loginTextField.typeText(yourEmail)
         
         app.buttons["Done"].tap()
         
         sleep(3)
         
         let passwordTextField = webView.descendants(matching: .secureTextField).element
-        XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
+        XCTAssertTrue(passwordTextField.waitForExistence(timeout: 3))
         
         passwordTextField.tap()
-        passwordTextField.typeText("Vtyfvdskmgfhjkm12")
+        
+        passwordTextField.typeText(yourPassword)
+        
+        sleep(1)
         
         app.buttons["Done"].tap()
         
         sleep(3)
-        
         
         webView.buttons["Login"].tap()
         
@@ -81,14 +86,13 @@ final class Image_FeedUITests1: XCTestCase {
         
         cellLike.tap()
         
-        sleep(4)
+        sleep(3)
             
         let image = app.scrollViews.images.element(boundBy: 0)
-            // Zoom in
-        
+           
         XCTAssertTrue(image.waitForExistence(timeout: 3))
-        image.pinch(withScale: 3, velocity: 1) // zoom in
-            // Zoom out
+        image.pinch(withScale: 3, velocity: 1)
+        
         image.pinch(withScale: 0.5, velocity: -1)
             
         let navBackButtonWhiteButton = app.buttons["back_button"]
@@ -97,12 +101,12 @@ final class Image_FeedUITests1: XCTestCase {
     }
     
     func testProfile() throws {
-        sleep(5)
+        sleep(3)
         
         app.tabBars.buttons.element(boundBy: 1).tap()
         
-        XCTAssertTrue(app.staticTexts["Сергей Видишев"].exists)
-        XCTAssertTrue(app.staticTexts["smoke0030"].exists)
+        XCTAssertTrue(app.staticTexts[yourNameLabel].exists)
+        XCTAssertTrue(app.staticTexts[yourLoginLabel].exists)
         
         app.buttons["exitButton"].tap()
         
@@ -110,9 +114,4 @@ final class Image_FeedUITests1: XCTestCase {
         
         app.alerts["До встречи!"].scrollViews.otherElements.buttons["Да"].tap()
     }
-    
-    
-    
-    
-    
 }

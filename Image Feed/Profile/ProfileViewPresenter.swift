@@ -7,7 +7,6 @@ protocol ProfileViewPresenterProtocol {
     func logout()
     func clean()
     func fetchProfileURL() -> URL
-    
 }
 
 final class ProfileViewPresenter: ProfileViewPresenterProtocol {

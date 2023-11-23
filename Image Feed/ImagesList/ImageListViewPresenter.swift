@@ -1,6 +1,5 @@
 import Foundation
 
-
 protocol ImageListViewPresenterProtocol {
     var view: ImageListViewControllerProtocol? {get set}
     var photos: [Photo] {get set}
@@ -10,10 +9,7 @@ protocol ImageListViewPresenterProtocol {
     
 }
 
-
 final class ImageListViewPresenter: ImageListViewPresenterProtocol {
-    
-    
     
     weak var view: ImageListViewControllerProtocol?
     var photos: [Photo] = []

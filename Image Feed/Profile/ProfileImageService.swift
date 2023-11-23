@@ -40,33 +40,33 @@ final class ProfileImageService {
             request = URLRequest(url: url)
             request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         } else {
-             assertionFailure("Error of create URL")
+            assertionFailure("Error of create URL")
         }
         return request!
     }
 }
 
-    extension ProfileImageService {
-        private func object(for request: URLRequest, comletion: @escaping (Result<UserResult, Error>) -> Void) -> URLSessionTask {
-            return urlSession.data(for: request) { result in
-                let response = result.flatMap { data -> Result<UserResult, Error> in
-                    Result { try JSONDecoder().decode(UserResult.self, from: data) }
-                }
-                comletion(response)
+extension ProfileImageService {
+    private func object(for request: URLRequest, comletion: @escaping (Result<UserResult, Error>) -> Void) -> URLSessionTask {
+        return urlSession.data(for: request) { result in
+            let response = result.flatMap { data -> Result<UserResult, Error> in
+                Result { try JSONDecoder().decode(UserResult.self, from: data) }
             }
+            comletion(response)
         }
     }
+}
+
+struct UserResult: Codable {
+    let profileImage: ProfileImage
     
-    struct UserResult: Codable {
-        let profileImage: ProfileImage
-        
-        enum CodingKeys: String, CodingKey {
-            case profileImage = "profile_image"
-        }
+    enum CodingKeys: String, CodingKey {
+        case profileImage = "profile_image"
     }
-    
-    struct ProfileImage: Codable {
-        let medium: String
-    }
+}
+
+struct ProfileImage: Codable {
+    let medium: String
+}
 
 
