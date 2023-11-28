@@ -31,6 +31,7 @@
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Qmd-Ic-kxG">
                                                     <rect key="frame" x="16" y="4" width="361" height="174"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="ImageListCell"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                             <integer key="value" value="16"/>
@@ -45,9 +46,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cek-kI-g8Y" userLabel="Like Button">
-                                                    <rect key="frame" x="347" y="4" width="30" height="34"/>
+                                                    <rect key="frame" x="328" y="4" width="49" height="44"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="like_button"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" title=" "/>
+                                                    <state key="normal" title=" " image="Active"/>
                                                     <connections>
                                                         <action selector="likeButtonClicked" destination="HZW-JH-gqj" eventType="touchUpInside" id="kJe-qg-mfJ"/>
                                                     </connections>
@@ -127,8 +129,9 @@
                                     <outlet property="delegate" destination="fOX-Vg-R0D" id="KTy-bH-C5s"/>
                                 </connections>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2MX-CX-1rE">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2MX-CX-1rE" userLabel="back button">
                                 <rect key="frame" x="8" y="8" width="48" height="48"/>
+                                <accessibility key="accessibilityConfiguration" identifier="back_button"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="vqK-I0-AoN"/>
                                     <constraint firstAttribute="width" constant="48" id="xoO-JG-DEw"/>
@@ -209,6 +212,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vmL-fq-i6m">
                                 <rect key="frame" x="32" y="680" width="329" height="48"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="at2-Z5-VI5"/>
                                 </constraints>
@@ -247,7 +251,7 @@
         <!--Web View View Controller-->
         <scene sceneID="ZJP-3l-dhS">
             <objects>
-                <viewController id="6bQ-iL-LI6" customClass="WebViewViewController" customModule="Image_Feed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6bQ-iL-LI6" customClass="WebViewViewController" customModule="Image_Feed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bvg-1Q-1HF">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -323,6 +327,7 @@
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
+        <image name="Active" width="44" height="44"/>
         <image name="Ellipse" width="51" height="50"/>
         <image name="auth_screen_logo" width="60" height="60"/>
         <image name="back_button" width="24" height="24"/>

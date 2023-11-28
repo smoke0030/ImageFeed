@@ -25,9 +25,9 @@ final class OAuth2Service {
         lastCode = code
         
         var components =  URLComponents(string: "https://unsplash.com/oauth/token")
-        components?.queryItems = [URLQueryItem(name: "client_id", value: accessKey),
-                                  URLQueryItem(name: "client_secret", value: secretKey),
-                                  URLQueryItem(name: "redirect_uri", value: redirectURI),
+        components?.queryItems = [URLQueryItem(name: "client_id", value: AuthConfiguration.standart.accessKey),
+                                  URLQueryItem(name: "client_secret", value: AuthConfiguration.standart.secretKey),
+                                  URLQueryItem(name: "redirect_uri", value: AuthConfiguration.standart.redirectURI),
                                   URLQueryItem(name: "code", value: code),
                                   URLQueryItem(name: "grant_type", value: "authorization_code")]
         
@@ -53,10 +53,7 @@ final class OAuth2Service {
             }
             self.task = task
             task.resume()
-            
         }
-        
-        
     }
 }
 
@@ -91,13 +88,13 @@ extension URLSession {
     }
     
     func objectTask<T: Decodable> (for request: URLRequest, completion: @escaping (Result<T, Error>) -> Void)
-        -> URLSessionTask {
-            return data(for: request) { result in
-                let response = result.flatMap { data -> Result<T, Error> in
-                    Result {try  JSONDecoder().decode(T.self, from: data) }
-                }
-                completion(response)
+    -> URLSessionTask {
+        return data(for: request) { result in
+            let response = result.flatMap { data -> Result<T, Error> in
+                Result {try  JSONDecoder().decode(T.self, from: data) }
             }
+            completion(response)
+        }
     }
     
 }

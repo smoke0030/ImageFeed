@@ -13,11 +13,13 @@ final class ImageListService {
     private var lastLoadedPage: Int = 0
     
     func fetchPhotosNextPage() {
+        //        task = nil
+        print(photos.count)
         assert(Thread.isMainThread)
         guard task == nil else { return }
         
         page = lastLoadedPage == 0 ? 1 : lastLoadedPage + 1
-
+        
         guard let token = oAuth2TokenStorage.token else { return }
         let request = makeRequest(token: token)
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
@@ -55,7 +57,6 @@ final class ImageListService {
                      largeImageURL: model.urls.full,
                      isLiked: model.isLiked)
     }
-    
     
     func makeRequest(token: String) -> URLRequest {
         var components = URLComponents(string: "https://api.unsplash.com/photos")
@@ -111,25 +112,19 @@ final class ImageListService {
         
     }
     
-    
     func deleteLike(token: String, photoID: String) -> URLRequest? {
-        guard let baseURL = defaultBaseApiURL else {
-            return nil
-        }
         var request = URLRequest.makeHTTPRequest(path: "photos/\(photoID)/like",
                                                  httMethod: "DELETE",
-                                                 baseURL: baseURL)
+                                                 baseURL: AuthConfiguration.standart.defaultBaseApiURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
     
     func postLike(token: String, photoID: String) -> URLRequest? {
-        guard let baseURL = defaultBaseApiURL else {
-            return nil
-        }
+        
         var request = URLRequest.makeHTTPRequest(path: "photos/\(photoID)/like",
                                                  httMethod: "POST",
-                                                 baseURL: baseURL)
+                                                 baseURL: AuthConfiguration.standart.defaultBaseApiURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
@@ -152,7 +147,7 @@ extension URLRequest {
     static func makeHTTPRequest (
         path:  String,
         httMethod: String,
-        baseURL: URL = defaultBaseURL) -> URLRequest {
+        baseURL: URL = AuthConfiguration.standart.defaultBaseURL) -> URLRequest {
             var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
             request.httpMethod = httMethod
             return request
